@@ -1,7 +1,8 @@
 .vscode/
 note/
 build/
+dist/
 .__init__.spec
 __pycache__/
-dist/__init__
 __init__.spec
+
