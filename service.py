@@ -24,6 +24,7 @@ class InstaCamera(object):
         self.state_api = "%s%s" % (self.camera_adress, ":20000/osc/state")
         self.file_api = "%s%s" % (self.camera_adress, ":8000")
         self.preview_api = "%s%s" % (self.camera_adress, ":1935/live/preview")
+        
         return self.camera_adress
 
     def get_current_time(self):
@@ -51,6 +52,8 @@ class InstaCamera(object):
                     "time_zone": "GMT+08:00/GMT-08:00"
                 }
         }
+
+        print ("camera ip: %s \n rtsp server:%s" % (self.camera_adress, self.rtmp_server))
 
         try:
             response = requests.post(self.command_api, **self.post_dic)
@@ -123,6 +126,8 @@ class InstaCamera(object):
         
 
     def start_live(self):
+        liveUrl = "%s/live" % (self.rtmp_server) 
+        print (liveUrl)
         if self._connected:
             self.post_dic['json'] = {
                 "name": "camera._startLive",
@@ -133,7 +138,7 @@ class InstaCamera(object):
                         "height": 2160, #2880 for max size,2160 for stitching
                         "framerate": 30,
                         "bitrate": 20480,
-                        "liveUrl": "rtsp://192.168.2.154:8554/live",
+                        "liveUrl": liveUrl,
                         "saveOrigin": False 
                     },
                     # "stiching": {
@@ -184,13 +189,3 @@ class InstaCamera(object):
         response = requests.post(self.command_api, **self.post_dic)
         self._status = response
         return response
-
-# insta = InstaCamera()
-# print (insta.connect().json())
-# print (insta.stop_live().json())
-# print (insta.start_live().json())
-# print (insta._status)
-# print (insta.stop_preview().json())
-# print (insta.start_preview().json())
-
-# print (insta.stop_preview().json())
