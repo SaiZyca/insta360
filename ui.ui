@@ -1,73 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
+ <author>Sai</author>
  <class>main</class>
  <widget class="QDialog" name="main">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>427</height>
+    <width>364</width>
+    <height>718</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Insta360 Controller</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
-   <item>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="camera_ip">
-       <property name="text">
-        <string>http://192.168.2.139</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0" colspan="2">
-      <widget class="QPushButton" name="stop_live">
-       <property name="text">
-        <string>Stop Live</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="rtsp_server">
-       <property name="text">
-        <string>rtsp://localhost:8554</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>RTSP Server :</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0" colspan="2">
-      <widget class="QPushButton" name="start_live">
-       <property name="text">
-        <string>Start Live</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Camera Adress :</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0" colspan="2">
-      <widget class="QTextEdit" name="response"/>
-     </item>
-     <item row="2" column="0" colspan="2">
-      <widget class="QPushButton" name="preview">
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="9" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Live Bitrate :</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="0" colspan="3">
+    <widget class="QTextEdit" name="log"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>RTSP Server :</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="QSpinBox" name="to_ev">
+     <property name="prefix">
+      <string>To EV : </string>
+     </property>
+     <property name="minimum">
+      <number>-7</number>
+     </property>
+     <property name="maximum">
+      <number>7</number>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="1" colspan="2">
+    <widget class="QSpinBox" name="bitrate">
+     <property name="toolTip">
+      <string>1~120Mbps</string>
+     </property>
+     <property name="suffix">
+      <string>  Mbps</string>
+     </property>
+     <property name="prefix">
+      <string/>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <number>120</number>
+     </property>
+     <property name="value">
+      <number>20</number>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="3">
+    <layout class="QHBoxLayout" name="Layout_stream">
+     <item>
+      <widget class="QPushButton" name="start_preview">
        <property name="toolTip">
         <string/>
        </property>
        <property name="text">
-        <string>Preview</string>
+        <string>Start Preview</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -77,6 +88,149 @@
        </property>
        <property name="autoExclusive">
         <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="start_live">
+       <property name="text">
+        <string>Start  Live</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="4" column="1">
+    <widget class="QSpinBox" name="from_ev">
+     <property name="prefix">
+      <string>From EV : </string>
+     </property>
+     <property name="minimum">
+      <number>-7</number>
+     </property>
+     <property name="maximum">
+      <number>7</number>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" colspan="2">
+    <widget class="QLineEdit" name="rtsp_server">
+     <property name="text">
+      <string>rtsp://localhost:8554</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Camera Adress :</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="1" colspan="2">
+    <widget class="QComboBox" name="resolution">
+     <property name="editable">
+      <bool>false</bool>
+     </property>
+     <item>
+      <property name="text">
+       <string>3840x2880@30fps</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>3840x2160@60fps</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>3840x2160@30fps</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>3840x1920@60fps</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>3200x2400@30fps</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>1920x1440@30fps</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>1920x1440@120fps</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QPushButton" name="take_picture">
+     <property name="text">
+      <string>Take 360 Picture</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Camera Resolution :</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" colspan="2">
+    <widget class="QLineEdit" name="camera_ip">
+     <property name="text">
+      <string>http://192.168.2.139</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="3">
+    <widget class="QPushButton" name="connect_camera">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>Connect Camera</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0" rowspan="2" colspan="3">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QCheckBox" name="live_stiching">
+       <property name="toolTip">
+        <string>Live stiching is force 4k resolution</string>
+       </property>
+       <property name="text">
+        <string>Live Stiching</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="stabilization">
+       <property name="text">
+        <string>stabilization</string>
        </property>
       </widget>
      </item>

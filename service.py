@@ -1,49 +1,65 @@
 # coding=UTF-8
 
 import requests
+import os
 from datetime import datetime
+from PySide2 import QtCore
+import socket
 
+class SignalSystem(QtCore.QObject):
+    log = QtCore.Signal(object)
+    connect_state = QtCore.Signal(bool)
 class InstaCamera(object):
     '''
     Insta360 Camera
     '''
     def __init__(self):
 
-        self._connected = False
         self._fingerprint = ''
         self._status = ''
+        self.connected = False
         self.post_dic = {}
         self.post_dic['headers'] = {}
         self.post_dic['headers']['content-type'] = 'application/json'
-        self.rtmp_server = "rtsp://localhost:8554"
-        self.camera_adress = ""
-        self.inital_services()
-
-    def inital_services(self):
-        self.command_api = "%s%s" % (self.camera_adress, ":20000/osc/commands/execute")
-        self.state_api = "%s%s" % (self.camera_adress, ":20000/osc/state")
-        self.file_api = "%s%s" % (self.camera_adress, ":8000")
-        self.preview_api = "%s%s" % (self.camera_adress, ":1935/live/preview")
+        self.rtmp_server = None
+        self.camera_adress = None
+        self.signals = SignalSystem()
         
-        return self.camera_adress
+
+    def inital_service(self, parm_dict):
+        self.rtmp_server = parm_dict['rtsp_server']
+        self.camera_adress = parm_dict['camera_ip']
+        self.command_api = "%s%s" % (parm_dict['camera_ip'], ":20000/osc/commands/execute")
+        self.state_api = "%s%s" % (parm_dict['camera_ip'], ":20000/osc/state")
+        self.file_api = "%s%s" % (parm_dict['camera_ip'], ":8000")
+        self.preview_api = "%s%s" % (parm_dict['camera_ip'], ":1935/live/preview")
+        
+        return self.rtmp_server, self.camera_adress
 
     def get_current_time(self):
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         return current_time
 
-    def set_camera_adress(self, value):
-        self.camera_adress = value
-        self.inital_services()
-
-    def set_rtmp_server(self, value):
-        self.rtmp_server = value
-        self.inital_services()
-
     def get_state(self):
         return self._status
 
-    def connect(self):
+    def ping_camera(self):
+        results = False
+        ip = self.camera_adress[7:]
+        response = os.system("ping -c 1 " + ip)
+
+        if response == 0:
+            self.signals.log.emit("get ip and connecting....") 
+            results = True
+        else:
+            self.signals.log.emit("Ping Camera Adress Fail") 
+            results = False
+
+        return results
+
+    def connect_camera(self, parm_dict):
+        self.inital_service(parm_dict)
         self.post_dic['json'] = {
             "name": "camera._connect",
             "parameters":
@@ -53,24 +69,35 @@ class InstaCamera(object):
                 }
         }
 
-        print ("camera ip: %s \n rtsp server:%s" % (self.camera_adress, self.rtmp_server))
+        if self.ping_camera():
+            try:
+                response = requests.post(self.command_api, **self.post_dic)
+                if response.status_code == 200:
+                    self.connected = True
+                    results = (response.json())['results']
+                    self._fingerprint = results['Fingerprint']
+                    self._status = results['last_info']['state']
+                    self.post_dic['headers']['Fingerprint'] = self._fingerprint
+                    self.connected = True
+                    self.signals.log.emit(results)
+                else:
+                    self.connected = False
 
-        try:
-            response = requests.post(self.command_api, **self.post_dic)
-            if response.status_code == 200:
-                self._connected = True
-                results = (response.json())['results']
-                self._fingerprint = results['Fingerprint']
-                self._status = results['last_info']['state']
-                self.post_dic['headers']['Fingerprint'] = self._fingerprint
-                # self._fingerprint = response.json()['responses']['Fingerprint']
-                self._status = ("response at :%s \n %s" % (self.get_current_time(), response.text) )
-                return response
-        except Exception as e: 
-            self._status = e
+            except Exception as e: 
+                self.connected = False
+                self.signals.log.emit(e)
 
-    def start_preview(self):
-        if self._connected:
+            return self.connected 
+
+    def camera_state(self, parm_dict):
+        self.inital_service(parm_dict)
+        response = requests.post(self.state_api, **self.post_dic)
+        self.signals.log.emit(response.json()['state'])
+        
+
+    def start_preview(self, parm_dict):
+        results = False
+        if self.connected:
             self.post_dic['json'] = {
                 "name": "camera._startPreview",
                 "parameters": {
@@ -97,20 +124,40 @@ class InstaCamera(object):
                     "bitrate":128
                     }
                 },
-                "stabilization": False
+                "stabilization": True
             }
-            response = requests.post(self.command_api, **self.post_dic)
-            self._status = response
-            return response
+            try:
+                response = requests.post(self.command_api, **self.post_dic)
+                if response.status_code == 200:
+                    self.signals.log.emit(response.json())
+                    self.signals.log.emit("previe url: rtsp://%s/live/preview" % (self.camera_adress[7:]) )
+                    results = True
+                else:
+                    self.signals.log.emit(response.json())
+                    results =  False
+            except Exception as e: 
+                self.connected = False
+                self.signals.log.emit(e)
+            
+            return results
             
 
     def stop_preview(self):
-         if self._connected:
+         if self.connected:
             self.post_dic['json'] = {"name": "camera._stopPreview"}
-
-            response = requests.post(self.command_api, **self.post_dic)
-            self._status = response
-            return response
+            try:
+                response = requests.post(self.command_api, **self.post_dic)
+                if response.status_code == 200:
+                    self.signals.log.emit(response.json())
+                    results = True
+                else:
+                    self.signals.log.emit(response.json())
+                    results =  False
+            except Exception as e: 
+                self.connected = False
+                self.signals.log.emit(e)
+            
+            return results
             
 
     def get_option(self):
@@ -121,14 +168,12 @@ class InstaCamera(object):
             }
         }
         response = requests.post(self.command_api, **self.post_dic)
-        self._status = response
         return response
-        
 
-    def start_live(self):
+    def start_live(self, parm_dict):
         liveUrl = "%s/live" % (self.rtmp_server) 
-        print (liveUrl)
-        if self._connected:
+
+        if self.connected:
             self.post_dic['json'] = {
                 "name": "camera._startLive",
                 "parameters": {
@@ -169,20 +214,35 @@ class InstaCamera(object):
 
         try:
             response = requests.post(self.command_api, **self.post_dic)
-            self._status = ("response at :%s \n %s" % (self.get_current_time(), response.text) )
-            return response
+            if response.status_code == 200:
+                self.signals.log.emit(response.json())
+                results = True
+            else:
+                self.signals.log.emit(response.json())
+                results =  False
         except Exception as e: 
-            self._status = e
+            self.connected = False
+            self.signals.log.emit(e)
+        
+        return results
 
     def stop_live(self):
-         if self._connected:
+         if self.connected:
             self.post_dic['json'] = {"name": "camera._stopLive"}
             try:
                 response = requests.post(self.command_api, **self.post_dic)
-                self._status = ("response at :%s \n %s" % (self.get_current_time(), response.text) )
-                return response      
+                if response.status_code == 200:
+                    self.signals.log.emit(response.json())
+                    results = True
+                else:
+                    self.signals.log.emit(response.json())
+                    results =  False
             except Exception as e: 
-                self._status = e
+                self.connected = False
+                self.signals.log.emit(e)
+        
+            return results
+
                 
     def get_image_param(self):
         self.post_dic['json'] = {"name": "camera._getImageParam"}
