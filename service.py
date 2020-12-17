@@ -74,12 +74,12 @@ class InstaCamera(object):
                 response = requests.post(self.command_api, **self.post_dic)
                 if response.status_code == 200:
                     self.connected = True
-                    results = (response.json())['results']
+                    results = response.json()['results']
                     self._fingerprint = results['Fingerprint']
                     self._status = results['last_info']['state']
                     self.post_dic['headers']['Fingerprint'] = self._fingerprint
                     self.connected = True
-                    self.signals.log.emit(results)
+                    self.signals.log.emit(response.json())
                 else:
                     self.connected = False
 
@@ -87,7 +87,7 @@ class InstaCamera(object):
                 self.connected = False
                 self.signals.log.emit(e)
 
-            return self.connected 
+        return self.connected 
 
     def camera_state(self, parm_dict):
         self.inital_service(parm_dict)

@@ -1,21 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
- <author>Sai</author>
- <class>main</class>
- <widget class="QDialog" name="main">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>364</width>
-    <height>771</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>Insta360 Controller</string>
-  </property>
-  <property name="styleSheet">
-   <string notr="true">/*
+/*
  *  BreezeDark stylesheet.
  *
  *  :author: Colin Duquesnoy
@@ -28,12 +11,12 @@
  * ---------------------------------------------------------------------
  *  The MIT License (MIT)
  *
- * Copyright (c) &lt;2013-2014&gt; &lt;Colin Duquesnoy&gt;
- * Copyright (c) &lt;2015-2016&gt; &lt;Alex Huszagh&gt;
+ * Copyright (c) <2013-2014> <Colin Duquesnoy>
+ * Copyright (c) <2015-2016> <Alex Huszagh>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
- * &quot;Software&quot;), to deal in the Software without restriction, including
+ * "Software"), to deal in the Software without restriction, including
  * without limitation the rights to use, copy, modify, merge, publish,
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
@@ -42,7 +25,7 @@
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
@@ -590,11 +573,11 @@ QMenu::separator
     margin-right: 0.5ex;
 }
 
-QFrame[frameShape=&quot;2&quot;],  /* QFrame::Panel == 0x0003 */
-QFrame[frameShape=&quot;3&quot;],  /* QFrame::WinPanel == 0x0003 */
-QFrame[frameShape=&quot;4&quot;],  /* QFrame::HLine == 0x0004 */
-QFrame[frameShape=&quot;5&quot;],  /* QFrame::VLine == 0x0005 */
-QFrame[frameShape=&quot;6&quot;]  /* QFrame::StyledPanel == 0x0006 */
+QFrame[frameShape="2"],  /* QFrame::Panel == 0x0003 */
+QFrame[frameShape="3"],  /* QFrame::WinPanel == 0x0003 */
+QFrame[frameShape="4"],  /* QFrame::HLine == 0x0004 */
+QFrame[frameShape="5"],  /* QFrame::VLine == 0x0005 */
+QFrame[frameShape="6"]  /* QFrame::StyledPanel == 0x0006 */
 {
     border-width: 0.1ex;
     padding: 0.1ex;
@@ -1348,12 +1331,12 @@ QToolButton
     padding: 0.5ex;
 }
 
-QToolButton[popupMode=&quot;1&quot;]  /* only for MenuButtonPopup */
+QToolButton[popupMode="1"]  /* only for MenuButtonPopup */
 {
     padding-right: 2ex; /* make way for the popup button */
 }
 
-QToolButton[popupMode=&quot;2&quot;]  /* only for InstantPopup */
+QToolButton[popupMode="2"]  /* only for InstantPopup */
 {
     padding-right: 1ex; /* make way for the popup button */
 }
@@ -1537,8 +1520,8 @@ QStatusBar::item
     border: 0px transparent dark;
 }
 
-QFrame[height=&quot;3&quot;],
-QFrame[width=&quot;3&quot;]
+QFrame[height="3"],
+QFrame[width="3"]
 {
     background-color: #76797c;
 }
@@ -1569,11 +1552,11 @@ QProgressBar:horizontal
     background-color: #626568;
     border: 0.1ex solid #31363b;
     border-radius: 0.3ex;
-    height: 3ex;
-    text-align: center;
+    height: 0.5ex;
+    text-align: right;
     margin-top: 0.5ex;
     margin-bottom: 0.5ex;
-    margin-right: 0ex;
+    margin-right: 5ex;
     padding: 0px;
 }
 
@@ -1661,393 +1644,3 @@ QDoubleSpinBox::down-arrow:off
 {
    border-image: url(resource/down_arrow_disabled.svg);
 }
-</string>
-  </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="leftMargin">
-    <number>6</number>
-   </property>
-   <item>
-    <layout class="QGridLayout" name="gridLayout_3">
-     <property name="leftMargin">
-      <number>2</number>
-     </property>
-     <property name="topMargin">
-      <number>2</number>
-     </property>
-     <property name="rightMargin">
-      <number>2</number>
-     </property>
-     <property name="bottomMargin">
-      <number>2</number>
-     </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Camera Adress :</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="rtsp_server">
-       <property name="text">
-        <string>rtsp://localhost:8554</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>RTSP Server :</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="camera_ip">
-       <property name="text">
-        <string>http://192.168.2.139</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0" colspan="2">
-      <widget class="QPushButton" name="connect_camera">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="text">
-        <string>Connect Camera</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="group_camera_parm">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
-     </property>
-     <layout class="QVBoxLayout" name="Layout_camera_parm">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QPushButton" name="take_picture">
-          <property name="text">
-           <string>Take 360 Picture</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QSpinBox" name="from_ev">
-          <property name="prefix">
-           <string>From EV : </string>
-          </property>
-          <property name="minimum">
-           <number>-7</number>
-          </property>
-          <property name="maximum">
-           <number>7</number>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QSpinBox" name="to_ev">
-          <property name="prefix">
-           <string>To EV : </string>
-          </property>
-          <property name="minimum">
-           <number>-7</number>
-          </property>
-          <property name="maximum">
-           <number>7</number>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="3">
-         <widget class="QProgressBar" name="pic_progress">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>20</number>
-          </property>
-          <property name="value">
-           <number>1</number>
-          </property>
-          <property name="textVisible">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="Layout_stream">
-        <item>
-         <widget class="QPushButton" name="start_preview">
-          <property name="toolTip">
-           <string/>
-          </property>
-          <property name="text">
-           <string>Start Preview</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <property name="autoExclusive">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="start_live">
-          <property name="text">
-           <string>Start  Live</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <property name="flat">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QCheckBox" name="live_stiching">
-          <property name="toolTip">
-           <string>Live stiching is force 4k resolution</string>
-          </property>
-          <property name="text">
-           <string>Live Stiching</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="stabilization">
-          <property name="text">
-           <string>stabilization</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Live Bitrate : </string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QSpinBox" name="bitrate">
-          <property name="toolTip">
-           <string>1~120Mbps</string>
-          </property>
-          <property name="suffix">
-           <string>  Mbps</string>
-          </property>
-          <property name="prefix">
-           <string/>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>120</number>
-          </property>
-          <property name="value">
-           <number>20</number>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Camera Resolution :</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QComboBox" name="resolution">
-          <property name="editable">
-           <bool>false</bool>
-          </property>
-          <item>
-           <property name="text">
-            <string>3840x2880@30fps</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>3840x2160@60fps</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>3840x2160@30fps</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>3840x1920@60fps</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>3200x2400@30fps</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>1920x1440@30fps</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>1920x1440@120fps</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QTextEdit" name="log"/>
-   </item>
-  </layout>
- </widget>
- <resources/>
- <connections>
-  <connection>
-   <sender>connect_camera</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>group_camera_parm</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>181</x>
-     <y>100</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>181</x>
-     <y>312</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>connect_camera</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>camera_ip</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>181</x>
-     <y>100</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>234</x>
-     <y>23</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>start_preview</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>start_live</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>91</x>
-     <y>197</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>269</x>
-     <y>197</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>start_live</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>start_preview</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>270</x>
-     <y>194</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>92</x>
-     <y>194</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>live_stiching</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>resolution</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>67</x>
-     <y>236</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>260</x>
-     <y>296</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>take_picture</sender>
-   <signal>clicked()</signal>
-   <receiver>pic_progress</receiver>
-   <slot>reset()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>64</x>
-     <y>131</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>181</x>
-     <y>162</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
-</ui>

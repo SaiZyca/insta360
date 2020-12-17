@@ -16,46 +16,33 @@ class MainWindow(QtWidgets.QWidget):
         self.ui.camera_ip.setText(self.settings.value('camera_ip'))
         self.ui.rtsp_server.setText(self.settings.value('rtsp_server'))
         self.parm_dict = {}
-        self.ui_camera_setting = [self.ui.take_picture,
-                              self.ui.from_ev, 
-                              self.ui.to_ev, 
-                              self.ui.start_preview,
-                              self.ui.start_live,
-                              self.ui.live_stiching,
-                              self.ui.stabilization,
-                              self.ui.bitrate,
-                              self.ui.resolution
-                              ]
-        self.disable_ui_camera_setting()
-
-    def disable_ui_camera_setting(self):
-        for item in self.ui_camera_setting:
-            item.setEnabled(False)
-
-    def enable_ui_camera_setting(self):
-        for item in self.ui_camera_setting:
-            item.setEnabled(True)
+        self.resolution_dict = {
+            0: {'text': "3840x2880@30fps", 'width': 3840, 'height': 2880, 'fps': 30},
+            1: {'text': "3840x2160@60fps", 'width': 3840, 'height': 2160, 'fps': 60},
+            2: {'text': "3840x2160@30fps", 'width': 3840, 'height': 2160, 'fps': 30},
+            3: {'text': "3840x1920@60fps", 'width': 3840, 'height': 1920, 'fps': 60},
+            4: {'text': "3200x2400@30fps", 'width': 3200, 'height': 2400, 'fps': 30},
+            5: {'text': "1920x1440@30fps", 'width': 1920, 'height': 1440, 'fps': 30},
+            6: {'text': "1920x1440@120fps", 'width': 1920, 'height': 1440, 'fps': 120}
+        }
 
     def connect_ui_signal(self):
         self.camera.signals.log.connect(self.print_log)
-        self.ui.connect_camera.clicked.connect(self.connect_camera)
+        self.ui.connect_camera.toggled.connect(self.connect_camera)
         self.ui.start_live.clicked.connect(self.start_live)
         self.ui.start_preview.clicked.connect(self.start_preview)
+        self.ui.live_stiching.toggled.connect(self.live_stiching)
         # self.ui.take_picture.clicked.connect(self.test_signal)
 
     def connect_camera(self):
         self.set_camera_parm()
-        if self.ui.connect_camera.text() == "Connect Camera":
-            if self.camera.connect_camera(self.parm_dict):
-                self.enable_ui_camera_setting()
-                self.ui.connect_camera.setText("Disconnect Camera...")
-                self.ui.connect_camera.setChecked(True)
+        button = self.ui.connect_camera
+        if button.text() == "Connect Camera":
+            button.setChecked(self.camera.connect_camera(self.parm_dict))
         else:
-            # self.camera.camera_state(self.parm_dict)
-            self.ui.connect_camera.setText("Connect Camera")
-            self.disable_ui_camera_setting()
-            self.ui.connect_camera.setChecked(False)
-
+            button.setChecked(False)
+        ui_text = {True:"Disconnect Camera....", False:"Connect Camera"}
+        button.setText(ui_text[button.isChecked()])
 
     def set_camera_parm(self):
         self.settings.setValue('camera_ip', self.ui.camera_ip.text())
@@ -70,18 +57,24 @@ class MainWindow(QtWidgets.QWidget):
                         'stabilization':True
                         }
 
-    def start_preview(self):
 
-        if self.ui.start_preview.isChecked():
-            self.camera.connect_camera(self.parm_dict)
-            self.camera.start_preview(self.parm_dict)
-            self.ui.start_preview.setText('Stop Preview')
-            
+
+
+    def start_preview(self):
+        button = self.ui.start_preview
+        self.camera.connect_camera(self.parm_dict)
+        if button.text() == "Satrt Preview":
+            button.setChecked(self.camera.start_preview(self.parm_dict))
         else:
-            self.camera.connect_camera(self.parm_dict)
             self.camera.stop_preview()
-            self.ui.start_preview.setText('Satrt Preview')
+            button.setChecked(False)
+
+        ui_text = {True:"Stop Preview", False:"Satrt Preview"}
+        button.setText(ui_text[button.isChecked()])
             
+    def live_stiching(self):
+
+        self.ui.resolution.setCurrentIndex(5)
 
     def start_live(self):
         if self.ui.start_live.isChecked():
